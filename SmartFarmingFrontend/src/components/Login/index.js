@@ -195,7 +195,7 @@ const Login = ({navigation}) => {
             onPress={handleLogin}>
             <Text
               style={{
-                color: 'white',
+                color: disabled ? 'grey' : 'white',
                 fontSize: 24,
                 fontWeight: '700',
                 fontFamily: 'Inter',
