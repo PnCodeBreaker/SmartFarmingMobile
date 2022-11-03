@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import React from 'react';
 
-const Home = ({navigation}) => {
+const Home = ({navigation, route}) => {
+  const {name, email} = route.params;
   return (
     <TouchableWithoutFeedback
       touchSoundDisabled
@@ -27,8 +28,9 @@ const Home = ({navigation}) => {
           style={{
             marginTop: 80,
             flexWrap: 'wrap',
-            flexDirection: 'row',
+            flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'space-evenly',
           }}>
           <Text
             style={{
@@ -40,6 +42,40 @@ const Home = ({navigation}) => {
             }}>
             HomeScreen
           </Text>
+          <Text
+            style={{
+              marginTop: 24,
+              color: 'white',
+              fontSize: 20,
+              fontWeight: '700',
+              fontFamily: 'Inter',
+            }}>
+            Name: {name}
+          </Text>
+          <Text
+            style={{
+              marginTop: 12,
+              color: 'white',
+              fontSize: 20,
+              fontWeight: '700',
+              fontFamily: 'Inter',
+            }}>
+            email: {email}
+          </Text>
+          <TouchableOpacity
+            // style={{width: width - 40, backgroundColor: 'white'}}
+            style={{alignSelf: 'center', marginTop: 80}}
+            onPress={() => navigation.navigate('Launch')}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 20,
+                fontWeight: '700',
+                fontFamily: 'Inter',
+              }}>
+              Log Out
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </TouchableWithoutFeedback>

@@ -10,6 +10,8 @@ import {
 import React, {useEffect} from 'react';
 import Input from '../../shared/Input';
 import {useState} from 'react';
+import axios from 'axios';
+import {baseURL} from '../../services';
 
 const Signup = ({navigation}) => {
   const [name, setName] = useState('');
@@ -19,6 +21,9 @@ const Signup = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [signUpError, setSignUpError] = useState(false);
+  const [SignUpErrorText, setSignUpErrorText] = useState('');
   const {width, height} = useWindowDimensions();
 
   const [disabled, setDisabled] = useState(true);
@@ -49,13 +54,31 @@ const Signup = ({navigation}) => {
     }
   }, [password, email]);
 
-  // const handleSignup = async () => {
-  //   const {data: userData} = await axios.post(`${baseURL}/user/signup`, {
-  //     name: name,
-  //     email: email,
-  //     password: password,
-  //   });
-  // };
+  const handleSignup = async () => {
+    setLoading(true);
+    setSignUpError(false);
+    console.log('consoling name email password', name, email, password);
+    const res = await axios.post(`${baseURL}/user/signup`, {
+      name: name,
+      email: email,
+      password: password,
+    });
+    setLoading(false);
+    console.log('res', res);
+    console.log('resData', res.data);
+    if (res.data.status == 201) {
+      navigation.navigate('Home', {
+        name: res.data.data.name,
+        email: res.data.data.email,
+      });
+    } else if (res.data.status == 400) {
+      setSignUpError(true);
+      setSignUpErrorText(`User already exists`);
+    } else if (res.data.status == 500) {
+      setSignUpError(true);
+      setSignUpErrorText(`Something went wrong! Please Try Again Later`);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback
@@ -168,21 +191,47 @@ const Signup = ({navigation}) => {
             marginTop: 80,
           }}
         />
-        <TouchableOpacity
-          // style={{width: width - 40, backgroundColor: 'white'}}
-          style={{alignSelf: 'center'}}
-          disabled={disabled}
-          onPress={() => navigation.navigate('Home')}>
+        {loading ? (
           <Text
             style={{
+              alignSelf: 'center',
               color: 'white',
               fontSize: 24,
               fontWeight: '700',
               fontFamily: 'Inter',
             }}>
-            Sign Up
+            Loading...
           </Text>
-        </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            // style={{width: width - 40, backgroundColor: 'white'}}
+            style={{alignSelf: 'center'}}
+            disabled={disabled}
+            onPress={handleSignup}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 24,
+                fontWeight: '700',
+                fontFamily: 'Inter',
+              }}>
+              Sign Up
+            </Text>
+          </TouchableOpacity>
+        )}
+        {signUpError && (
+          <Text
+            style={{
+              alignSelf: 'center',
+              marginTop: 16,
+              color: 'red',
+              fontSize: 18,
+              fontWeight: '700',
+              fontFamily: 'Inter',
+            }}>
+            {SignUpErrorText}
+          </Text>
+        )}
         <View
           style={{
             marginTop: 24,

@@ -10,10 +10,8 @@ import {
 import React, {useEffect} from 'react';
 import Input from '../../shared/Input';
 import {useState} from 'react';
-import EyeOpen from 'react-native-vector-icons/Ionicons';
-import EyeClose from 'react-native-vector-icons/Ionicons';
-// import EyeOpen from '../../assets/eyeopen.svg';
-// import EyeClose from '../../assets/eyeclose.svg';
+import axios from 'axios';
+import {baseURL} from '../../services';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -21,6 +19,9 @@ const Login = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [signUpError, setSignUpError] = useState(false);
+  const [SignUpErrorText, setSignUpErrorText] = useState('');
   const {width, height} = useWindowDimensions();
 
   const [disabled, setDisabled] = useState(true);
@@ -50,6 +51,34 @@ const Login = ({navigation}) => {
       setEmailError(false);
     }
   }, [password, email]);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setSignUpError(false);
+    console.log('consoling email password', email, password);
+    const res = await axios.post(`${baseURL}/user/signin`, {
+      email: email,
+      password: password,
+    });
+    setLoading(false);
+    console.log('res', res);
+    console.log('resData', res.data);
+    if (res.data.status == 200) {
+      navigation.navigate('Home', {
+        name: res.data.data.name,
+        email: res.data.data.email,
+      });
+    } else if (res.data.status == 404) {
+      setSignUpError(true);
+      setSignUpErrorText(`User doesn't exist`);
+    } else if (res.data.status == 400) {
+      setSignUpError(true);
+      setSignUpErrorText(`Invalid credentials`);
+    } else if (res.data.status == 500) {
+      setSignUpError(true);
+      setSignUpErrorText(`Something went wrong! Please Try Again Later`);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback
@@ -147,21 +176,47 @@ const Login = ({navigation}) => {
             marginTop: 80,
           }}
         />
-        <TouchableOpacity
-          // style={{width: width - 40, backgroundColor: 'white'}}
-          style={{alignSelf: 'center'}}
-          onPress={() => navigation.navigate('Home')}
-          disabled={disabled}>
+        {loading ? (
           <Text
             style={{
+              alignSelf: 'center',
               color: 'white',
               fontSize: 24,
               fontWeight: '700',
               fontFamily: 'Inter',
             }}>
-            Log In
+            Loading...
           </Text>
-        </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            // style={{width: width - 40, backgroundColor: 'white'}}
+            style={{alignSelf: 'center'}}
+            disabled={disabled}
+            onPress={handleLogin}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 24,
+                fontWeight: '700',
+                fontFamily: 'Inter',
+              }}>
+              Log In
+            </Text>
+          </TouchableOpacity>
+        )}
+        {signUpError && (
+          <Text
+            style={{
+              alignSelf: 'center',
+              marginTop: 16,
+              color: 'red',
+              fontSize: 18,
+              fontWeight: '700',
+              fontFamily: 'Inter',
+            }}>
+            {SignUpErrorText}
+          </Text>
+        )}
         <View
           style={{
             marginTop: 24,
@@ -170,6 +225,7 @@ const Login = ({navigation}) => {
         <TouchableOpacity
           // style={{width: width - 40, backgroundColor: 'white'}}
           style={{alignSelf: 'center'}}
+          // disabled={disabled}
           onPress={() => navigation.navigate('Signup')}>
           <Text
             style={{
