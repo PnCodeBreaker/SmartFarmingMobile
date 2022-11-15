@@ -1,84 +1,67 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  useWindowDimensions,
-  TouchableOpacity,
-} from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import MarketPlace from './MarketPlace';
+import Cart from './Cart';
+import Profile from './Profile';
+import {Text} from 'react-native';
+
+const Tab = createBottomTabNavigator();
 
 const Home = ({navigation, route}) => {
-  const {name, email} = route.params;
+  const {userId, name, email} = route.params;
   return (
-    <TouchableWithoutFeedback
-      touchSoundDisabled
-      onPress={() => {
-        Keyboard.dismiss();
-      }}>
-      <ScrollView
-        style={{
-          flex: 1,
-          width: '100%',
-          backgroundColor: '#141414',
-          paddingHorizontal: 20,
-        }}>
-        <View
-          style={{
-            marginTop: 80,
-            flexWrap: 'wrap',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}>
-          <Text
-            style={{
-              // marginLeft: 8,
-              color: 'white',
-              fontSize: 34,
-              fontWeight: '700',
-              fontFamily: 'Inter',
-            }}>
-            HomeScreen
-          </Text>
-          <Text
-            style={{
-              marginTop: 24,
-              color: 'white',
-              fontSize: 20,
-              fontWeight: '700',
-              fontFamily: 'Inter',
-            }}>
-            Name: {name}
-          </Text>
-          <Text
-            style={{
-              marginTop: 12,
-              color: 'white',
-              fontSize: 20,
-              fontWeight: '700',
-              fontFamily: 'Inter',
-            }}>
-            email: {email}
-          </Text>
-          <TouchableOpacity
-            // style={{width: width - 40, backgroundColor: 'white'}}
-            style={{alignSelf: 'center', marginTop: 80}}
-            onPress={() => navigation.navigate('Launch')}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 20,
-                fontWeight: '700',
-                fontFamily: 'Inter',
-              }}>
-              Log Out
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </TouchableWithoutFeedback>
+    <>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          animation: 'slide_from_right',
+          tabBarStyle: {
+            backgroundColor: '#141414',
+            borderTopWidth: 0,
+          },
+          tabBarActiveTintColor: 'lightgreen',
+          tabBarInactiveTintColor: 'white',
+        }}
+        initialRouteName={'MarketPlace'}>
+        <Tab.Screen
+          name="MarketPlace"
+          initialParams={{userId: userId}}
+          component={MarketPlace}
+          options={{
+            tabBarIcon: ({color, size}) => (
+              <Text style={{color: color, fontFamily: 'Inter', fontSize: 16}}>
+                MarketPlace
+              </Text>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Cart"
+          initialParams={{userId: userId}}
+          component={Cart}
+          options={{
+            tabBarIcon: ({color, size}) => (
+              <Text style={{color: color, fontFamily: 'Inter', fontSize: 16}}>
+                Cart
+              </Text>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          initialParams={{userId: userId, name: name, email: email}}
+          component={Profile}
+          options={{
+            tabBarIcon: ({color, size}) => (
+              <Text style={{color: color, fontFamily: 'Inter', fontSize: 16}}>
+                Profile
+              </Text>
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </>
   );
 };
 

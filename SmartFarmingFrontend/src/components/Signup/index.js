@@ -68,6 +68,7 @@ const Signup = ({navigation}) => {
     console.log('resData', res.data);
     if (res.data.status == 201) {
       navigation.navigate('Home', {
+        userId: res.data.data._id,
         name: res.data.data.name,
         email: res.data.data.email,
       });
