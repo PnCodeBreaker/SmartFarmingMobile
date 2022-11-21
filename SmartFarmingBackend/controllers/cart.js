@@ -26,6 +26,18 @@ export const postCartByUserId = async (req, res) => {
   }
 };
 
+export const deleteCartByProductId = async (req, res) => {
+  console.log(req.params);
+  const { productId } = req.params;
+
+  try {
+    await CartModel.deleteOne({ product: productId });
+    return res.json({ status: 201, message: "Successfully deleted" });
+  } catch (error) {
+    return res.json({ status: 500, message: "Something went wrong", error });
+  }
+};
+
 export const deleteCartById = async (req, res) => {
   console.log(req.params);
   const { id } = req.params;
