@@ -20,7 +20,7 @@ const MarketPlaceCard = ({item, userId}) => {
   const handleAddToCart = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.post(`${baseURL}/cart/postProduct`, {
+      const res = await axios.post(`${baseURL}/cart/postCartByUserId`, {
         user: userId,
         product: item._id,
         selectedQuantity: 1,
@@ -39,7 +39,9 @@ const MarketPlaceCard = ({item, userId}) => {
   const handleRemoveFromCart = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.delete(`${baseURL}/cart/postProduct/${item._id}`);
+      const res = await axios.delete(
+        `${baseURL}/cart/removeCartByProductId/${item._id}`,
+      );
       if (res.data.status == 201) {
         setIsLoading(false);
         setAddedCart(false);
