@@ -23,7 +23,7 @@ const Home = ({navigation, route}) => {
           tabBarActiveTintColor: 'lightgreen',
           tabBarInactiveTintColor: 'white',
         }}
-        initialRouteName={'MarketPlace'}>
+        initialRouteName={'Profile'}>
         <Tab.Screen
           name="MarketPlace"
           initialParams={{userId: userId}}

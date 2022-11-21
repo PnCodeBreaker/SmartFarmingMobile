@@ -9,13 +9,12 @@ import {
 import React from 'react';
 import {useState} from 'react';
 import axios from 'axios';
-import {baseURL} from '../../../../services/index';
+import {baseURL} from '../../../services/index';
 
-const MarketPlaceCard = ({item, userId}) => {
+const CartCard = ({item}) => {
   const [isSeeMore, setIsSeeMore] = useState(true);
   const [addedCart, setAddedCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const {userId} = route.params;
 
   const handleAddToCart = async () => {
     try {
@@ -75,38 +74,6 @@ const MarketPlaceCard = ({item, userId}) => {
           style={{height: 150}}
           source={{uri: item.image}}
         />
-        {isSeeMore ? (
-          <Text
-            style={{
-              color: '#333333',
-              fontWeight: '500',
-              fontSize: 14,
-              marginTop: 10,
-            }}>
-            {item.description.slice(0, 80)}
-            {item.description.length > 80 && (
-              <>
-                {isSeeMore && (
-                  <Text
-                    onPress={() => setIsSeeMore(!isSeeMore)}
-                    style={{fontSize: 14, color: 'grey'}}>
-                    ... See More
-                  </Text>
-                )}
-              </>
-            )}
-          </Text>
-        ) : (
-          <Text
-            style={{
-              color: '#333333',
-              fontWeight: '500',
-              fontSize: 14,
-              marginTop: 10,
-            }}>
-            {item.description}
-          </Text>
-        )}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <TouchableOpacity
             style={{
@@ -149,7 +116,7 @@ const MarketPlaceCard = ({item, userId}) => {
                   fontWeight: '700',
                   fontSize: 16,
                 }}>
-                {isLoading ? 'loading' : 'Added'}
+                Added
               </Text>
             </TouchableOpacity>
           ) : (
@@ -172,7 +139,7 @@ const MarketPlaceCard = ({item, userId}) => {
                   fontWeight: '700',
                   fontSize: 16,
                 }}>
-                {isLoading ? 'loading' : 'Add to Cart'}
+                Add to Cart
               </Text>
             </TouchableOpacity>
           )}
@@ -182,6 +149,6 @@ const MarketPlaceCard = ({item, userId}) => {
   );
 };
 
-export default MarketPlaceCard;
+export default CartCard;
 
 const styles = StyleSheet.create({});

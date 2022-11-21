@@ -12,7 +12,9 @@ import {baseURL} from '../../../services/index';
 import axios from 'axios';
 import MarketPlaceCard from './marketPlaceCard';
 
-const MarketPlace = ({navigation}) => {
+const MarketPlace = ({navigation, route}) => {
+  const {userId} = route.params;
+
   const [isLoader, setIsLoader] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -42,7 +44,12 @@ const MarketPlace = ({navigation}) => {
 
   const renderItem = ({item, index}) => (
     <View style={styles.feedContainer}>
-      <MarketPlaceCard item={item} index={index} navigation={navigation} />
+      <MarketPlaceCard
+        item={item}
+        index={index}
+        navigation={navigation}
+        userId={userId}
+      />
     </View>
   );
 
