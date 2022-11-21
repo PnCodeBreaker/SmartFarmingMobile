@@ -6,16 +6,21 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {baseURL} from '../../../services/index';
 import axios from 'axios';
 import CartCard from './CartCard';
+import {useFocusEffect} from '@react-navigation/native';
+import {useCallback} from 'react';
 
 const Cart = ({navigation, route}) => {
   const {userId} = route.params;
   const [isLoader, setIsLoader] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [counter, setCounter] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const [data, setData] = useState([]);
 
@@ -27,11 +32,17 @@ const Cart = ({navigation, route}) => {
         `${baseURL}/cart/getCartByUserId/${userId}`,
       );
       console.log(response.data.status);
-      console.log(response.data.product);
+      console.log(response.data.cart);
 
       if (response.data.status == 200) {
         setIsLoader(false);
-        setData(response.data.product);
+        const cost = response.data.cart.reduce(
+          (sum, curr) => sum + curr.product.price * curr.selectedQuantity,
+          0,
+        );
+        console.log('total amount', cost);
+        setData(response.data.cart);
+        setTotalAmount(cost);
       } else {
         setIsLoader(false);
         setIsError(true);
@@ -45,13 +56,32 @@ const Cart = ({navigation, route}) => {
 
   const renderItem = ({item, index}) => (
     <View style={styles.feedContainer}>
-      <CartCard item={item} index={index} navigation={navigation} />
+      <CartCard
+        item={item}
+        index={index}
+        navigation={navigation}
+        setCounter={setCounter}
+      />
     </View>
   );
 
-  useEffect(() => {
-    getCart();
-  }, [navigation]);
+  // useEffect(() => {
+  //   getCart();
+  // }, [navigation, counter]);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused
+      getCart();
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+        setIsLoader(false);
+        setData([]);
+        setTotalAmount(0);
+      };
+    }, [counter]),
+  );
 
   return (
     <TouchableWithoutFeedback
@@ -109,10 +139,115 @@ const Cart = ({navigation, route}) => {
               )}
             </>
           }
+          // ListFooterComponent={
+          //   <View
+          //     style={{
+          //       flexDirection: 'row',
+          //       backgroundColor: '#C8A2C8',
+          //       padding: 20,
+          //       justifyContent: 'space-between',
+          //     }}>
+          //     <TouchableOpacity
+          //       style={{
+          //         // marginTop: 20,
+          //         paddingHorizontal: 10,
+          //         paddingVertical: 10,
+          //         backgroundColor: 'black',
+          //         borderRadius: 30,
+          //         width: 120,
+          //         alignItems: 'center',
+          //         justifyContent: 'center',
+          //       }}>
+          //       <Text
+          //         style={{
+          //           textAlignVertical: 'center',
+          //           color: 'white',
+          //           fontWeight: '700',
+          //           fontSize: 15,
+          //         }}>
+          //         $ {totalAmount}
+          //       </Text>
+          //     </TouchableOpacity>
+          //     <TouchableOpacity
+          //       style={{
+          //         // marginTop: 20,
+          //         paddingHorizontal: 15,
+          //         paddingVertical: 12,
+          //         backgroundColor: '#14670b',
+          //         borderRadius: 10,
+          //         width: 160,
+          //         alignItems: 'center',
+          //         justifyContent: 'center',
+          //       }}>
+          //       <Text
+          //         style={{
+          //           textAlignVertical: 'center',
+          //           color: 'white',
+          //           fontWeight: '700',
+          //           fontSize: 16,
+          //         }}>
+          //         Place Order
+          //       </Text>
+          //     </TouchableOpacity>
+          //   </View>
+          // }
+          // ListFooterComponentStyle={{flexGrow: 1, justifyContent: 'flex-end'}}
+          // contentContainerStyle={{flexGrow: 1}}
           data={data}
           keyExtractor={item => item._id}
           renderItem={renderItem}
         />
+        <View
+          style={{
+            // alignSelf: 'flex-end',
+            flexDirection: 'row',
+            backgroundColor: '#C8A2C8',
+            padding: 20,
+            justifyContent: 'space-between',
+          }}>
+          <TouchableOpacity
+            style={{
+              // marginTop: 20,
+              paddingHorizontal: 10,
+              paddingVertical: 10,
+              backgroundColor: 'black',
+              borderRadius: 30,
+              width: 120,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                textAlignVertical: 'center',
+                color: 'white',
+                fontWeight: '700',
+                fontSize: 15,
+              }}>
+              $ {totalAmount}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              // marginTop: 20,
+              paddingHorizontal: 15,
+              paddingVertical: 12,
+              backgroundColor: '#14670b',
+              borderRadius: 10,
+              width: 160,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                textAlignVertical: 'center',
+                color: 'white',
+                fontWeight: '700',
+                fontSize: 16,
+              }}>
+              Place Order
+            </Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

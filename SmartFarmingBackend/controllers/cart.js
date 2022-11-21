@@ -26,6 +26,20 @@ export const postCartByUserId = async (req, res) => {
   }
 };
 
+export const updateQuantityById = async (req, res) => {
+  console.log(req.body);
+  const { id, selectedQuantity } = req.body;
+  try {
+    const cartItem = await CartModel.findOneAndUpdate(
+      { _id: id },
+      { selectedQuantity }
+    );
+    return res.json({ status: 201, cartItem });
+  } catch (error) {
+    return res.json({ status: 500, message: "Something went wrong", error });
+  }
+};
+
 export const deleteCartByProductId = async (req, res) => {
   console.log(req.params);
   const { productId } = req.params;

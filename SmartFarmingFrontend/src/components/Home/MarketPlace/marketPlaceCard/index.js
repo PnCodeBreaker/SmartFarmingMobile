@@ -15,6 +15,9 @@ const MarketPlaceCard = ({item, userId}) => {
   const [isSeeMore, setIsSeeMore] = useState(true);
   const [addedCart, setAddedCart] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(
+    item.quantity > 0 ? true : false,
+  );
   // const {userId} = route.params;
 
   const handleAddToCart = async () => {
@@ -157,11 +160,12 @@ const MarketPlaceCard = ({item, userId}) => {
           ) : (
             <TouchableOpacity
               onPress={handleAddToCart}
+              disabled={!isAvailable}
               style={{
                 marginTop: 20,
                 paddingHorizontal: 15,
                 paddingVertical: 10,
-                backgroundColor: 'orange',
+                backgroundColor: isAvailable ? 'orange' : 'grey',
                 borderRadius: 40,
                 width: 120,
                 alignItems: 'center',
@@ -174,7 +178,11 @@ const MarketPlaceCard = ({item, userId}) => {
                   fontWeight: '700',
                   fontSize: 16,
                 }}>
-                {isLoading ? 'loading' : 'Add to Cart'}
+                {isLoading
+                  ? 'loading'
+                  : isAvailable
+                  ? 'Add to Cart'
+                  : 'Out of Stock'}
               </Text>
             </TouchableOpacity>
           )}

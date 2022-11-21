@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import {useState} from 'react';
 import axios from 'axios';
-import {baseURL} from '../../../services/index';
+// import {baseURL} from '../../../services/index';
 
 const CartCard = ({item}) => {
   const [isSeeMore, setIsSeeMore] = useState(true);
