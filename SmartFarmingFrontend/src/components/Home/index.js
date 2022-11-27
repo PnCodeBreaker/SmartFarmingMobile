@@ -7,8 +7,7 @@ import {Text} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
-const Home = ({navigation, route}) => {
-  const {userId, name, email} = route.params;
+const Home = ({navigation}) => {
   return (
     <>
       <Tab.Navigator
@@ -26,7 +25,6 @@ const Home = ({navigation, route}) => {
         initialRouteName={'MarketPlace'}>
         <Tab.Screen
           name="MarketPlace"
-          initialParams={{userId: userId}}
           component={MarketPlace}
           options={{
             tabBarIcon: ({color, size}) => (
@@ -38,7 +36,6 @@ const Home = ({navigation, route}) => {
         />
         <Tab.Screen
           name="Cart"
-          initialParams={{userId: userId}}
           component={Cart}
           options={{
             tabBarIcon: ({color, size}) => (
@@ -50,7 +47,6 @@ const Home = ({navigation, route}) => {
         />
         <Tab.Screen
           name="Profile"
-          initialParams={{userId: userId, name: name, email: email}}
           component={Profile}
           options={{
             tabBarIcon: ({color, size}) => (

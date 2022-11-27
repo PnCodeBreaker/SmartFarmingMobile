@@ -8,15 +8,17 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {baseURL} from '../../../services/index';
 import axios from 'axios';
 import CartCard from './CartCard';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
+import UserContext from '../../../context/userContext';
 
-const Cart = ({navigation, route}) => {
-  const {userId} = route.params;
+const Cart = ({navigation}) => {
+  const {userId} = useContext(UserContext);
+
   const [isLoader, setIsLoader] = useState(false);
   const [isError, setIsError] = useState(false);
   const [counter, setCounter] = useState(0);

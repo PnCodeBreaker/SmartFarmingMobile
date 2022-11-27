@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/getCartByUserId/:userId", getCartByUserId);
 router.post("/postCartByUserId", postCartByUserId);
-router.patch("/upadteQuantityById/:id", updateQuantityById);
+router.patch("/updateQuantityById", updateQuantityById);
 router.delete("/removeCartByProductId/:productId", deleteCartByProductId);
 router.delete("/removeCartById/:id", deleteCartById);
 router.delete("/removeCartByUserId/:userId", deleteCartByUserId);

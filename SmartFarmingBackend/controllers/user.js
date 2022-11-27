@@ -49,3 +49,15 @@ export const signup = async (req, res) => {
     return res.json({ status: 500, message: "Something went wrong" });
   }
 };
+
+export const getUserData = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const data = await UserModal.findOne({ _id: userId }).select("-password");
+    console.log(data);
+    return res.json({ status: 200, data });
+  } catch (error) {
+    return res.json({ status: 500, message: "Something went wrong" });
+  }
+};

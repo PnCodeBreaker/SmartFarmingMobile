@@ -7,13 +7,14 @@ import {
   Keyboard,
   FlatList,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {baseURL} from '../../../services/index';
 import axios from 'axios';
 import MarketPlaceCard from './marketPlaceCard';
+import UserContext from '../../../context/userContext';
 
-const MarketPlace = ({navigation, route}) => {
-  const {userId} = route.params;
+const MarketPlace = ({navigation}) => {
+  const {userId} = useContext(UserContext);
 
   const [isLoader, setIsLoader] = useState(false);
   const [isError, setIsError] = useState(false);

@@ -12,8 +12,11 @@ import Input from '../../shared/Input';
 import {useState} from 'react';
 import axios from 'axios';
 import {baseURL} from '../../services';
+import {useContext} from 'react';
+import UserContext from '../../context/userContext';
 
 const Signup = ({navigation}) => {
+  const {updateUserId} = useContext(UserContext);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState(false);
   const [email, setEmail] = useState('');
@@ -67,11 +70,8 @@ const Signup = ({navigation}) => {
     console.log('res', res);
     console.log('resData', res.data);
     if (res.data.status == 201) {
-      navigation.navigate('Home', {
-        userId: res.data.data._id,
-        name: res.data.data.name,
-        email: res.data.data.email,
-      });
+      updateUserId(res.data.data._id);
+      navigation.navigate('Home');
     } else if (res.data.status == 400) {
       setSignUpError(true);
       setSignUpErrorText(`User already exists`);
