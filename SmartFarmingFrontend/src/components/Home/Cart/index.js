@@ -7,6 +7,7 @@ import {
   Keyboard,
   FlatList,
   TouchableOpacity,
+  useWindowDimensions,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {baseURL} from '../../../services/index';
@@ -15,9 +16,14 @@ import CartCard from './CartCard';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 import UserContext from '../../../context/userContext';
+import AddressModal from './AddressModal';
 
 const Cart = ({navigation}) => {
+  const {width, height} = useWindowDimensions();
+
   const {userId} = useContext(UserContext);
+
+  const [isAddressModal, setIsAddressModal] = useState(false);
 
   const [isLoader, setIsLoader] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -85,174 +91,193 @@ const Cart = ({navigation}) => {
     }, [counter]),
   );
 
-  return (
-    <TouchableWithoutFeedback
-      touchSoundDisabled
-      onPress={() => {
-        Keyboard.dismiss();
-      }}>
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          ListHeaderComponent={
-            <>
+  if (isAddressModal) {
+    return (
+      <AddressModal
+        isAddressOpen={isAddressModal}
+        setIsAddressOpen={setIsAddressModal}
+        userId={userId}
+        totalAmount={totalAmount}
+        navigation={navigation}
+      />
+    );
+  } else {
+    return (
+      <TouchableWithoutFeedback
+        touchSoundDisabled
+        onPress={() => {
+          Keyboard.dismiss();
+        }}>
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            ListHeaderComponent={
+              <>
+                <Text
+                  style={{
+                    marginTop: 30,
+                    paddingHorizontal: 16,
+                    color: 'white',
+                    fontSize: 24,
+                    fontFamily: 'Inter',
+                    marginBottom: 20,
+                  }}>
+                  Cart
+                </Text>
+                {isLoader && (
+                  <View style={{marginTop: 150}}>
+                    <Text
+                      style={{fontSize: 24, color: 'white', fontWeight: '700'}}>
+                      Loading...
+                    </Text>
+                  </View>
+                )}
+                {isError && (
+                  <View
+                    style={{
+                      marginTop: height * 0.1,
+                      // marginHorizontal: 50,
+                      // alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                    }}>
+                    <Text
+                      style={{
+                        marginTop: 30,
+                        textAlign: 'center',
+                        fontFamily: 'Inter',
+                        alignContent: 'center',
+                        fontWeight: '500',
+                        color: '#FFFFFF',
+                        fontSize: 16,
+                      }}>
+                      Some unexpected error occurred, or your data connection
+                      got lost.
+                    </Text>
+                  </View>
+                )}
+              </>
+            }
+            // ListFooterComponent={
+            //   <View
+            //     style={{
+            //       flexDirection: 'row',
+            //       backgroundColor: '#C8A2C8',
+            //       padding: 20,
+            //       justifyContent: 'space-between',
+            //     }}>
+            //     <TouchableOpacity
+            //       style={{
+            //         // marginTop: 20,
+            //         paddingHorizontal: 10,
+            //         paddingVertical: 10,
+            //         backgroundColor: 'black',
+            //         borderRadius: 30,
+            //         width: 120,
+            //         alignItems: 'center',
+            //         justifyContent: 'center',
+            //       }}>
+            //       <Text
+            //         style={{
+            //           textAlignVertical: 'center',
+            //           color: 'white',
+            //           fontWeight: '700',
+            //           fontSize: 15,
+            //         }}>
+            //         $ {totalAmount}
+            //       </Text>
+            //     </TouchableOpacity>
+            //     <TouchableOpacity
+            //       style={{
+            //         // marginTop: 20,
+            //         paddingHorizontal: 15,
+            //         paddingVertical: 12,
+            //         backgroundColor: '#14670b',
+            //         borderRadius: 10,
+            //         width: 160,
+            //         alignItems: 'center',
+            //         justifyContent: 'center',
+            //       }}>
+            //       <Text
+            //         style={{
+            //           textAlignVertical: 'center',
+            //           color: 'white',
+            //           fontWeight: '700',
+            //           fontSize: 16,
+            //         }}>
+            //         Place Order
+            //       </Text>
+            //     </TouchableOpacity>
+            //   </View>
+            // }
+            // ListFooterComponentStyle={{flexGrow: 1, justifyContent: 'flex-end'}}
+            // contentContainerStyle={{flexGrow: 1}}
+            data={data}
+            keyExtractor={item => item._id}
+            ListEmptyComponent={
+              <View style={{marginTop: height / 4, alignItems: 'center'}}>
+                <Text style={{fontSize: 18}}>Cart is Empty!</Text>
+              </View>
+            }
+            renderItem={renderItem}
+          />
+          <View
+            style={{
+              // alignSelf: 'flex-end',
+              flexDirection: 'row',
+              backgroundColor: '#C8A2C8',
+              padding: 20,
+              justifyContent: 'space-between',
+            }}>
+            <TouchableOpacity
+              style={{
+                // marginTop: 20,
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                backgroundColor: 'black',
+                borderRadius: 30,
+                width: 120,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
               <Text
                 style={{
-                  marginTop: 30,
-                  paddingHorizontal: 16,
+                  textAlignVertical: 'center',
                   color: 'white',
-                  fontSize: 24,
-                  fontFamily: 'Inter',
-                  marginBottom: 20,
+                  fontWeight: '700',
+                  fontSize: 15,
                 }}>
-                Cart
+                $ {totalAmount}
               </Text>
-              {isLoader && (
-                <View style={{marginTop: 150}}>
-                  <Text
-                    style={{fontSize: 24, color: 'white', fontWeight: '700'}}>
-                    Loading...
-                  </Text>
-                </View>
-              )}
-              {isError && (
-                <View
-                  style={{
-                    marginTop: height * 0.1,
-                    // marginHorizontal: 50,
-                    // alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                  }}>
-                  <Text
-                    style={{
-                      marginTop: 30,
-                      textAlign: 'center',
-                      fontFamily: 'Inter',
-                      alignContent: 'center',
-                      fontWeight: '500',
-                      color: '#FFFFFF',
-                      fontSize: 16,
-                    }}>
-                    Some unexpected error occurred, or your data connection got
-                    lost.
-                  </Text>
-                </View>
-              )}
-            </>
-          }
-          // ListFooterComponent={
-          //   <View
-          //     style={{
-          //       flexDirection: 'row',
-          //       backgroundColor: '#C8A2C8',
-          //       padding: 20,
-          //       justifyContent: 'space-between',
-          //     }}>
-          //     <TouchableOpacity
-          //       style={{
-          //         // marginTop: 20,
-          //         paddingHorizontal: 10,
-          //         paddingVertical: 10,
-          //         backgroundColor: 'black',
-          //         borderRadius: 30,
-          //         width: 120,
-          //         alignItems: 'center',
-          //         justifyContent: 'center',
-          //       }}>
-          //       <Text
-          //         style={{
-          //           textAlignVertical: 'center',
-          //           color: 'white',
-          //           fontWeight: '700',
-          //           fontSize: 15,
-          //         }}>
-          //         $ {totalAmount}
-          //       </Text>
-          //     </TouchableOpacity>
-          //     <TouchableOpacity
-          //       style={{
-          //         // marginTop: 20,
-          //         paddingHorizontal: 15,
-          //         paddingVertical: 12,
-          //         backgroundColor: '#14670b',
-          //         borderRadius: 10,
-          //         width: 160,
-          //         alignItems: 'center',
-          //         justifyContent: 'center',
-          //       }}>
-          //       <Text
-          //         style={{
-          //           textAlignVertical: 'center',
-          //           color: 'white',
-          //           fontWeight: '700',
-          //           fontSize: 16,
-          //         }}>
-          //         Place Order
-          //       </Text>
-          //     </TouchableOpacity>
-          //   </View>
-          // }
-          // ListFooterComponentStyle={{flexGrow: 1, justifyContent: 'flex-end'}}
-          // contentContainerStyle={{flexGrow: 1}}
-          data={data}
-          keyExtractor={item => item._id}
-          renderItem={renderItem}
-        />
-        <View
-          style={{
-            // alignSelf: 'flex-end',
-            flexDirection: 'row',
-            backgroundColor: '#C8A2C8',
-            padding: 20,
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity
-            style={{
-              // marginTop: 20,
-              paddingHorizontal: 10,
-              paddingVertical: 10,
-              backgroundColor: 'black',
-              borderRadius: 30,
-              width: 120,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text
+            </TouchableOpacity>
+            <TouchableOpacity
+              disabled={data.length > 0 ? false : true}
+              onPress={() => setIsAddressModal(true)}
               style={{
-                textAlignVertical: 'center',
-                color: 'white',
-                fontWeight: '700',
-                fontSize: 15,
+                // marginTop: 20,
+                paddingHorizontal: 15,
+                paddingVertical: 12,
+                backgroundColor: data.length > 0 ? '#14670b' : 'grey',
+                borderRadius: 10,
+                width: 160,
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
-              $ {totalAmount}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              // marginTop: 20,
-              paddingHorizontal: 15,
-              paddingVertical: 12,
-              backgroundColor: '#14670b',
-              borderRadius: 10,
-              width: 160,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                textAlignVertical: 'center',
-                color: 'white',
-                fontWeight: '700',
-                fontSize: 16,
-              }}>
-              Place Order
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
-  );
+              <Text
+                style={{
+                  textAlignVertical: 'center',
+                  color: 'white',
+                  fontWeight: '700',
+                  fontSize: 16,
+                }}>
+                Place Order
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    );
+  }
 };
 
 export default Cart;

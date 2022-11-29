@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   FlatList,
+  useWindowDimensions,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {baseURL} from '../../../services/index';
@@ -14,6 +15,8 @@ import MarketPlaceCard from './marketPlaceCard';
 import UserContext from '../../../context/userContext';
 
 const MarketPlace = ({navigation}) => {
+  const {height, widht} = useWindowDimensions();
+
   const {userId} = useContext(UserContext);
 
   const [isLoader, setIsLoader] = useState(false);
