@@ -11,10 +11,13 @@ import {
   Text,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import Input from '../../../../shared/Input';
 import {useEffect} from 'react';
+import axios from 'axios';
+import {baseURL} from '../../../../services';
 
 const AddressModal = ({
   navigation,
@@ -33,6 +36,7 @@ const AddressModal = ({
   const [country, setCountry] = useState('');
 
   const [disable, setDisable] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [confirmed, setConfirmed] = useState(false);
 
@@ -50,7 +54,27 @@ const AddressModal = ({
   }, [address, city, postalCode, country]);
 
   const handlePlaceOrder = async () => {
-    setConfirmed(true);
+    try {
+      setIsLoading(true);
+      const res = await axios.post(`${baseURL}/order/postOrderByUserId`, {
+        user: userId,
+        totalAmount,
+        orderAddress: {
+          address,
+          city,
+          postalCode,
+          country,
+        },
+      });
+      if (res.data.status === 201) {
+        setConfirmed(true);
+      } else {
+        Alert.alert('Failed to Place Order, Try Again');
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Failed to Place Order, Try Again');
+    }
   };
 
   const handleNavigateToProfile = () => {
@@ -201,7 +225,7 @@ const AddressModal = ({
               </View>
               <TouchableOpacity
                 onPress={handlePlaceOrder}
-                disabled={disable}
+                disabled={disable && !isLoading}
                 style={{
                   width: width - 40,
                   marginVertical: 40,
@@ -211,7 +235,7 @@ const AddressModal = ({
                   alignItems: 'center',
                 }}>
                 <Text style={{fontSize: 20, fontWeight: '700', color: 'white'}}>
-                  Place Order
+                  {isLoading ? 'Loading...' : 'Place Order'}
                 </Text>
               </TouchableOpacity>
             </>

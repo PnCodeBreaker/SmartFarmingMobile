@@ -6,15 +6,26 @@ const orderSchema = mongoose.Schema({
     required: true,
     ref: "User",
   },
-  product: {
-    type: mongoose.Schema.Types.ObjectId,
+  cart: {
+    type: [mongoose.Schema.Types.ObjectId],
     required: true,
-    ref: "Product",
+    ref: "Cart",
   },
-  selectedQuantity: {
-    type: Number,
+  totalAmount: {
+    type: String,
     required: true,
+  },
+  orderAddress: {
+    address: { type: String, required: true },
+    city: { type: String, required: true },
+    postalCode: { type: String, required: true },
+    country: { type: String, required: true },
+  },
+  orderStatus: {
+    type: String,
+    enum: ["To Be Shipped", "Shipped", "Delivered"],
+    default: "To Be Shipped",
   },
 });
 
-export default mongoose.model("Cart", orderSchema);
+export default mongoose.model("Order", orderSchema);

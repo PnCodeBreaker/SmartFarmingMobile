@@ -61,3 +61,19 @@ export const getUserData = async (req, res) => {
     return res.json({ status: 500, message: "Something went wrong" });
   }
 };
+
+export const updateUserData = async (req, res) => {
+  console.log(req.body);
+  const { userId, name } = req.body;
+  try {
+    const user = await UserModal.findOneAndUpdate(
+      {
+        _id: userId,
+      },
+      { name }
+    );
+    return res.json({ status: 201, user });
+  } catch (error) {
+    return res.json({ status: 500, message: "Something went wrong", error });
+  }
+};

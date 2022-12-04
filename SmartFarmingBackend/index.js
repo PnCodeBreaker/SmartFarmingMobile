@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/user.js";
 import productRoutes from "./routes/product.js";
 import cartRoutes from "./routes/cart.js";
+import orderRoutes from "./routes/order.js";
 
 const app = express();
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/user", userRoutes);
 app.use("/product", productRoutes);
 app.use("/cart", cartRoutes);
+app.use("/order", orderRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to SmartFarming");
 });

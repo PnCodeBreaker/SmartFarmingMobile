@@ -14,12 +14,16 @@ import {CommonActions, useFocusEffect} from '@react-navigation/native';
 import {useCallback} from 'react';
 import {useState} from 'react';
 import axios from 'axios';
+import EditProfileModal from './EditProfileModal';
 
 const Profile = ({navigation}) => {
   const {userId, updateUserId} = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [userData, setUserData] = useState([]);
+  const [counter, setCounter] = useState(0);
+
+  const [isEditProfile, setIsEditProfile] = useState(true);
 
   const {width, height} = useWindowDimensions();
 
@@ -70,97 +74,127 @@ const Profile = ({navigation}) => {
         setIsLoading(false);
         setUserData([]);
       };
-    }, []),
+    }, [counter]),
   );
 
-  return (
-    <TouchableWithoutFeedback
-      touchSoundDisabled
-      onPress={() => {
-        Keyboard.dismiss();
-      }}>
-      <ScrollView
-        style={{
-          flex: 1,
-          width: '100%',
-          backgroundColor: '#141414',
-          paddingHorizontal: 20,
+  if (isEditProfile) {
+    return (
+      <EditProfileModal
+        navigation={navigation}
+        isEditProfileOpen={isEditProfile}
+        setIsEditProfileOpen={setIsEditProfile}
+        userId={userId}
+        userName={userData.name}
+        setCounter={setCounter}
+      />
+    );
+  } else {
+    return (
+      <TouchableWithoutFeedback
+        touchSoundDisabled
+        onPress={() => {
+          Keyboard.dismiss();
         }}>
-        {isLoading ? (
-          <View
-            style={{
-              height: height,
-              justifyContent: 'center',
-              alignContent: 'center',
-            }}>
-            <Text
+        <ScrollView
+          style={{
+            flex: 1,
+            width: '100%',
+            backgroundColor: '#141414',
+            paddingHorizontal: 20,
+          }}>
+          {isLoading ? (
+            <View
               style={{
-                color: 'white',
-                fontSize: 30,
-                fontWeight: '700',
-                fontFamily: 'Inter',
+                height: height,
+                justifyContent: 'center',
+                alignContent: 'center',
               }}>
-              Loading....
-            </Text>
-          </View>
-        ) : (
-          <View
-            style={{
-              marginTop: 30,
-              flexWrap: 'wrap',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              justifyContent: 'space-evenly',
-            }}>
-            <Text
-              style={{
-                // marginLeft: 8,
-                color: 'white',
-                fontSize: 34,
-                fontWeight: '700',
-                fontFamily: 'Inter',
-              }}>
-              Profile
-            </Text>
-            <Text
-              style={{
-                marginTop: 24,
-                color: 'white',
-                fontSize: 20,
-                fontWeight: '700',
-                fontFamily: 'Inter',
-              }}>
-              Name: {userData.name}
-            </Text>
-            <Text
-              style={{
-                marginTop: 12,
-                color: 'white',
-                fontSize: 20,
-                fontWeight: '700',
-                fontFamily: 'Inter',
-              }}>
-              email: {userData.email}
-            </Text>
-            <TouchableOpacity
-              // style={{width: width - 40, backgroundColor: 'white'}}
-              style={{alignSelf: 'center', marginTop: 80}}
-              onPress={logout}>
               <Text
                 style={{
+                  color: 'white',
+                  fontSize: 30,
+                  fontWeight: '700',
+                  fontFamily: 'Inter',
+                }}>
+                Loading....
+              </Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                marginTop: 30,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    // marginLeft: 8,
+                    color: 'white',
+                    fontSize: 34,
+                    fontWeight: '700',
+                    fontFamily: 'Inter',
+                  }}>
+                  Profile
+                </Text>
+                <TouchableOpacity
+                  // style={{width: width - 40, backgroundColor: 'white'}}
+                  onPress={logout}>
+                  <Text
+                    style={{
+                      color: '#E30B5C',
+                      fontSize: 18,
+                      fontWeight: '600',
+                      fontFamily: 'Inter',
+                    }}>
+                    Log Out
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <Text
+                style={{
+                  marginTop: 24,
                   color: 'white',
                   fontSize: 20,
                   fontWeight: '700',
                   fontFamily: 'Inter',
                 }}>
-                Log Out
+                Name: {userData.name}
               </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </ScrollView>
-    </TouchableWithoutFeedback>
-  );
+              <Text
+                style={{
+                  marginTop: 12,
+                  color: 'white',
+                  fontSize: 20,
+                  fontWeight: '700',
+                  fontFamily: 'Inter',
+                }}>
+                email: {userData.email}
+              </Text>
+              <TouchableOpacity
+                onPress={() => setIsEditProfile(true)}
+                style={{
+                  marginVertical: 40,
+                  width: width - 40,
+                  borderRadius: 6,
+                  backgroundColor: 'lightgreen',
+                  padding: 16,
+                  alignItems: 'center',
+                }}>
+                <Text style={{fontSize: 20, fontWeight: '700', color: 'white'}}>
+                  Edit Profile
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    );
+  }
 };
 
 export default Profile;

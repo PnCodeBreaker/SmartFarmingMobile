@@ -35,9 +35,7 @@ export const UserProvider = ({children}) => {
     try {
       const result = await AsyncStorage.setItem('userId', value);
       console.log('update userId in context', result);
-      if (result) {
-        setUserIdValue(value);
-      }
+      fetchUserId();
       setIsIdLoading(false);
       setIsIdError(false);
     } catch (error) {
@@ -49,7 +47,7 @@ export const UserProvider = ({children}) => {
 
   useEffect(() => {
     fetchUserId();
-  }, [userIdValue]);
+  }, []);
 
   return (
     <UserContext.Provider
