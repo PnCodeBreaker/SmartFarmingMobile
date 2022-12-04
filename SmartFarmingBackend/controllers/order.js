@@ -5,13 +5,32 @@ export const getOrderByUserId = async (req, res) => {
   const { userId } = req.params;
   console.log(userId);
   try {
-    const order = await OrderModel.find({ user: userId }).populate({
-      path: "cart",
-      populate: ["product"],
-    });
+    const order = await OrderModel.find({ user: userId })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "cart",
+        populate: "product",
+      });
     res.json({ status: 200, order });
   } catch (err) {
     res.json({ status: 500, message: "Something went wrong", err });
+  }
+};
+
+export const getLatestOrderByUserId = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const latestOrder = await OrderModel.findOne({ user: userId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({
+        path: "cart",
+        populate: "product",
+      });
+    return res.json({ status: 200, latestOrder });
+  } catch (error) {
+    res.json({ status: 500, message: "Something went wrong", error });
   }
 };
 
@@ -21,11 +40,14 @@ export const postOrderByUserId = async (req, res) => {
   try {
     const cart = await CartModel.find({ user });
     console.log(cart);
-    const cartIds = cart.map((item) => item._id);
-    console.log(cartIds);
+    const cartData = cart.map((item) => ({
+      product: item.product,
+      selectedQuantity: item.selectedQuantity,
+    }));
+    console.log("cartData", cartData);
     const order = await OrderModel.create({
       user,
-      cart: cartIds,
+      cart: cartData,
       orderAddress,
       totalAmount,
       orderStatus,

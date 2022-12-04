@@ -6,6 +6,7 @@ import {
   Keyboard,
   useWindowDimensions,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useContext, useEffect} from 'react';
 import UserContext from '../../../context/userContext';
@@ -23,9 +24,14 @@ const Profile = ({navigation}) => {
   const [userData, setUserData] = useState([]);
   const [counter, setCounter] = useState(0);
 
-  const [isEditProfile, setIsEditProfile] = useState(true);
+  const [latestOrder, setLatestOrder] = useState({});
+
+  const [isEditProfile, setIsEditProfile] = useState(false);
 
   const {width, height} = useWindowDimensions();
+
+  console.log('latestOrder', latestOrder);
+  // console.log('latestImage', latestOrder.cart[0].product.image);
 
   const getUserData = async () => {
     setIsLoading(true);
@@ -38,6 +44,32 @@ const Profile = ({navigation}) => {
       if (response.data.status == 200) {
         setIsLoading(false);
         setUserData(response.data.data);
+      } else {
+        setIsLoading(false);
+        setIsError(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      setIsError(true);
+    }
+  };
+
+  const getLatestOrder = async (req, res) => {
+    setIsLoading(true);
+    setIsError(false);
+
+    try {
+      const response = await axios.get(
+        `${baseURL}/order/getLatestOrderByUserId/${userId}`,
+      );
+      if (response.data.status == 200) {
+        setIsLoading(false);
+        console.log(
+          'latestOrder inside get',
+          response.data.latestOrder.product,
+        );
+        setLatestOrder(response.data.latestOrder);
       } else {
         setIsLoading(false);
         setIsError(true);
@@ -68,11 +100,13 @@ const Profile = ({navigation}) => {
     useCallback(() => {
       // Do something when the screen is focused
       getUserData();
+      getLatestOrder();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
         setIsLoading(false);
         setUserData([]);
+        setLatestOrder({});
       };
     }, [counter]),
   );
@@ -188,6 +222,30 @@ const Profile = ({navigation}) => {
                 <Text style={{fontSize: 20, fontWeight: '700', color: 'white'}}>
                   Edit Profile
                 </Text>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  marginTop: 30,
+                  marginBottom: 20,
+                  fontSize: 34,
+                  fontWeight: '700',
+                  fontFamily: 'Inter',
+                }}>
+                Your Orders :
+              </Text>
+              <TouchableOpacity
+                style={{
+                  width: width - 40,
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  borderColor: '#141414',
+                  backgroundColor: '#FAF9F6',
+                  padding: 10,
+                }}>
+                {/* <Image
+                  source={{uri: latestOrder.cart[0].product.image}}
+                  height={80}
+                /> */}
               </TouchableOpacity>
             </View>
           )}

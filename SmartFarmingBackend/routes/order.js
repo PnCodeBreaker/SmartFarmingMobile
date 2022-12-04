@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getLatestOrderByUserId,
   getOrderByUserId,
   postOrderByUserId,
   updateOrderStatusById,
@@ -7,6 +8,7 @@ import {
 const router = express.Router();
 
 router.get("/getOrderByUserId/:userId", getOrderByUserId);
+router.get("/getLatestOrderByUserId/:userId", getLatestOrderByUserId);
 router.post("/postOrderByUserId", postOrderByUserId);
 router.patch("/updateOrderStatusById", updateOrderStatusById);
 
