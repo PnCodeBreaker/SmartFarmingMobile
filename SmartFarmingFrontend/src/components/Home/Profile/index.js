@@ -231,75 +231,91 @@ const Profile = ({navigation}) => {
                 }}>
                 Orders :
               </Text>
-              <TouchableOpacity
-                // onPress={{  }}
-                style={{
-                  width: width - 40,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  borderColor: '#141414',
-                  backgroundColor: '#FAF9F6',
-                  padding: 10,
-                }}>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                  <Image
-                    resizeMode="contain"
-                    source={{
-                      uri: latestProduct.image,
-                    }}
-                    style={{height: 80, width: 80}}
-                  />
-                  <Text
+              {latestOrder ? (
+                <>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Order')}
                     style={{
-                      marginLeft: 20,
-                      color: 'black',
-                      fontSize: 24,
-                      fontWeight: '700',
-                      fontFamily: 'Inter',
+                      width: width - 40,
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderColor: '#141414',
+                      backgroundColor: '#FAF9F6',
+                      padding: 10,
                     }}>
-                    {latestProduct.name} + {itemCount} Other Items
-                  </Text>
-                </View>
+                    <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                      <Image
+                        resizeMode="contain"
+                        source={{
+                          uri: latestProduct.image,
+                        }}
+                        style={{height: 80, width: 80}}
+                      />
+                      <Text
+                        style={{
+                          marginLeft: 20,
+                          color: 'black',
+                          fontSize: 24,
+                          fontWeight: '700',
+                          fontFamily: 'Inter',
+                        }}>
+                        {latestProduct.name} + {itemCount} Other Items
+                      </Text>
+                    </View>
+                    <Text
+                      style={{
+                        margin: 10,
+                        color: 'black',
+                        fontSize: 22,
+                        fontWeight: '700',
+                        fontFamily: 'Inter',
+                      }}>
+                      Total Amount : {latestOrder.totalAmount}
+                    </Text>
+                    <Text
+                      style={{
+                        margin: 10,
+                        color: 'green',
+                        fontSize: 22,
+                        fontWeight: '700',
+                        fontFamily: 'Inter',
+                      }}>
+                      Order Status: {latestOrder.orderStatus}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Order')}
+                    style={{
+                      marginTop: 20,
+                      backgroundColor: '#71797E',
+                      width: width - 40,
+                      borderRadius: 10,
+                      alignItems: 'center',
+                      padding: 10,
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 22,
+                        fontWeight: '700',
+                        fontFamily: 'Inter',
+                      }}>
+                      See All Orders
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              ) : (
                 <Text
                   style={{
-                    margin: 10,
-                    color: 'black',
-                    fontSize: 22,
+                    marginTop: 12,
+                    color: 'white',
+                    fontSize: 24,
                     fontWeight: '700',
                     fontFamily: 'Inter',
                   }}>
-                  Total Amount : {latestOrder.totalAmount}
+                  You Have not ordered anything
                 </Text>
-                <Text
-                  style={{
-                    margin: 10,
-                    color: 'green',
-                    fontSize: 22,
-                    fontWeight: '700',
-                    fontFamily: 'Inter',
-                  }}>
-                  Order Status: {latestOrder.orderStatus}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  marginTop: 20,
-                  backgroundColor: '#71797E',
-                  width: width - 40,
-                  borderRadius: 10,
-                  alignItems: 'center',
-                  padding: 10,
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 22,
-                    fontWeight: '700',
-                    fontFamily: 'Inter',
-                  }}>
-                  See All Orders
-                </Text>
-              </TouchableOpacity>
+              )}
             </View>
           )}
         </ScrollView>

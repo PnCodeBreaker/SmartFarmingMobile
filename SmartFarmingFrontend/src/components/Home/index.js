@@ -4,6 +4,8 @@ import MarketPlace from './MarketPlace';
 import Cart from './Cart';
 import Profile from './Profile';
 import {Text} from 'react-native';
+import Order from './Order';
+import AgroPlus from './AgroPlus';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +30,7 @@ const Home = ({navigation}) => {
           component={MarketPlace}
           options={{
             tabBarIcon: ({color, size}) => (
-              <Text style={{color: color, fontFamily: 'Inter', fontSize: 16}}>
+              <Text style={{color: color, fontFamily: 'Inter', fontSize: 15}}>
                 MarketPlace
               </Text>
             ),
@@ -39,7 +41,7 @@ const Home = ({navigation}) => {
           component={Cart}
           options={{
             tabBarIcon: ({color, size}) => (
-              <Text style={{color: color, fontFamily: 'Inter', fontSize: 16}}>
+              <Text style={{color: color, fontFamily: 'Inter', fontSize: 15}}>
                 Cart
               </Text>
             ),
@@ -50,10 +52,30 @@ const Home = ({navigation}) => {
           component={Profile}
           options={{
             tabBarIcon: ({color, size}) => (
-              <Text style={{color: color, fontFamily: 'Inter', fontSize: 16}}>
+              <Text style={{color: color, fontFamily: 'Inter', fontSize: 15}}>
                 Profile
               </Text>
             ),
+          }}
+        />
+        <Tab.Screen
+          name="AgroPlus"
+          component={AgroPlus}
+          options={{
+            tabBarIcon: ({color, size}) => (
+              <Text style={{color: color, fontFamily: 'Inter', fontSize: 15}}>
+                Agro+
+              </Text>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Order"
+          component={Order}
+          options={{
+            tabBarStyle: {display: 'none'},
+            tabBarButton: () => null,
+            tabBarVisible: false,
           }}
         />
       </Tab.Navigator>
