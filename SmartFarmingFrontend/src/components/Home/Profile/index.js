@@ -25,13 +25,12 @@ const Profile = ({navigation}) => {
   const [counter, setCounter] = useState(0);
 
   const [latestOrder, setLatestOrder] = useState({});
+  const [latestProduct, setLatestProduct] = useState([]);
+  const [itemCount, setItemCount] = useState(0);
 
   const [isEditProfile, setIsEditProfile] = useState(false);
 
   const {width, height} = useWindowDimensions();
-
-  console.log('latestOrder', latestOrder);
-  // console.log('latestImage', latestOrder.cart[0].product.image);
 
   const getUserData = async () => {
     setIsLoading(true);
@@ -56,20 +55,19 @@ const Profile = ({navigation}) => {
   };
 
   const getLatestOrder = async (req, res) => {
-    setIsLoading(true);
-    setIsError(false);
-
     try {
+      setIsLoading(true);
+      setIsError(false);
       const response = await axios.get(
         `${baseURL}/order/getLatestOrderByUserId/${userId}`,
       );
       if (response.data.status == 200) {
         setIsLoading(false);
-        console.log(
-          'latestOrder inside get',
-          response.data.latestOrder.product,
-        );
-        setLatestOrder(response.data.latestOrder);
+
+        setLatestOrder(response.data.order);
+        console.log('latestOrder inside get', latestOrder);
+        setLatestProduct(response.data.order.cart[0].product);
+        setItemCount(response.data.order.cart.length - 1);
       } else {
         setIsLoading(false);
         setIsError(true);
@@ -242,10 +240,45 @@ const Profile = ({navigation}) => {
                   backgroundColor: '#FAF9F6',
                   padding: 10,
                 }}>
-                {/* <Image
-                  source={{uri: latestOrder.cart[0].product.image}}
-                  height={80}
-                /> */}
+                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                  <Image
+                    resizeMode="contain"
+                    source={{
+                      uri: latestProduct.image,
+                    }}
+                    style={{height: 80, width: 80}}
+                  />
+                  <Text
+                    style={{
+                      marginLeft: 20,
+                      color: 'black',
+                      fontSize: 24,
+                      fontWeight: '700',
+                      fontFamily: 'Inter',
+                    }}>
+                    {latestProduct.name} + {itemCount} Other Items
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    // marginLeft: 20,
+                    color: 'black',
+                    fontSize: 22,
+                    fontWeight: '700',
+                    fontFamily: 'Inter',
+                  }}>
+                  Order Status: {latestOrder.orderStatus}
+                </Text>
+                <Text
+                  style={{
+                    margin: 10,
+                    color: 'black',
+                    fontSize: 22,
+                    fontWeight: '700',
+                    fontFamily: 'Inter',
+                  }}>
+                  Total Amount : {latestOrder.totalAmount}
+                </Text>
               </TouchableOpacity>
             </View>
           )}

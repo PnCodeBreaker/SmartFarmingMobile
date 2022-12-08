@@ -20,7 +20,7 @@ export const getOrderByUserId = async (req, res) => {
 export const getLatestOrderByUserId = async (req, res) => {
   const { userId } = req.params;
   try {
-    const latestOrder = await OrderModel.findOne({ user: userId })
+    const order = await OrderModel.findOne({ user: userId })
       .sort({
         createdAt: -1,
       })
@@ -28,7 +28,7 @@ export const getLatestOrderByUserId = async (req, res) => {
         path: "cart",
         populate: "product",
       });
-    return res.json({ status: 200, latestOrder });
+    return res.json({ status: 200, order });
   } catch (error) {
     res.json({ status: 500, message: "Something went wrong", error });
   }

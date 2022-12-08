@@ -3,6 +3,6 @@
 // export const baseURL = 'http://10.5.121.201:5000/api/v1/mobile';
 // export const baseURL = 'http://10.5.114.62:5000/api/v1/mobile';
 // export const baseURL = 'http://10.5.112.153:5000';
-// export const baseURL = 'http://192.168.189.236:5000'; // Prithwish Mobile IP
+// export const baseURL = 'http://192.168.42.236:5000'; // Prithwish Mobile IP
 // export const baseURL = 'http://192.168.0.172:5000/api/v1/mobile';       // Prithwish Home IP
 export const baseURL = 'http://192.168.1.9:5000'; // Rent Home Wifi
