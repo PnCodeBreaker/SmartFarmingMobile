@@ -101,6 +101,7 @@ const CropDoctor = ({navigation}) => {
                     fontSize: 20,
                     color: 'white',
                     fontWeight: '700',
+                    marginRight: 5,
                   }}>
                   Select Language:{' '}
                 </Text>
