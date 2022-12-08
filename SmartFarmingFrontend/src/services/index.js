@@ -7,5 +7,5 @@
 // export const baseURL = 'http://10.5.112.153:5000';
 // export const baseURL = 'http://192.168.42.236:5000'; // Prithwish Mobile IP
 // export const baseURL = 'http://192.168.0.172:5000/api/v1/mobile';       // Prithwish Home IP
-export const baseURL = 'http://192.168.1.3:5001'; // Rent Home Wifi
-// export const baseURL = 'https://protected-earth-38483.herokuapp.com';
+// export const baseURL = 'http://192.168.1.3:5001'; // Rent Home Wifi
+export const baseURL = 'https://protected-earth-38483.herokuapp.com';
