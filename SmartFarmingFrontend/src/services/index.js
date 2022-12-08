@@ -1,8 +1,9 @@
 // export const baseURL = 'http://192.168.2.148:5000/api/v1/mobile';
 // export const baseURL = 'http://192.168.29.151:5000'; // Prithwish's IP
+export const baseURL = 'http://192.168.29.147:5001'; // office wifi
 // export const baseURL = 'http://10.5.121.201:5000/api/v1/mobile';
 // export const baseURL = 'http://10.5.114.62:5000/api/v1/mobile';
 // export const baseURL = 'http://10.5.112.153:5000';
 // export const baseURL = 'http://192.168.42.236:5000'; // Prithwish Mobile IP
 // export const baseURL = 'http://192.168.0.172:5000/api/v1/mobile';       // Prithwish Home IP
-export const baseURL = 'http://192.168.1.9:5000'; // Rent Home Wifi
+// export const baseURL = 'http://192.168.1.9:5000'; // Rent Home Wifi

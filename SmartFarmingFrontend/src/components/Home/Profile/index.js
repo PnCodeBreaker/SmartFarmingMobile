@@ -229,9 +229,10 @@ const Profile = ({navigation}) => {
                   fontWeight: '700',
                   fontFamily: 'Inter',
                 }}>
-                Your Orders :
+                Orders :
               </Text>
               <TouchableOpacity
+                // onPress={{  }}
                 style={{
                   width: width - 40,
                   borderWidth: 1,
@@ -261,16 +262,6 @@ const Profile = ({navigation}) => {
                 </View>
                 <Text
                   style={{
-                    // marginLeft: 20,
-                    color: 'black',
-                    fontSize: 22,
-                    fontWeight: '700',
-                    fontFamily: 'Inter',
-                  }}>
-                  Order Status: {latestOrder.orderStatus}
-                </Text>
-                <Text
-                  style={{
                     margin: 10,
                     color: 'black',
                     fontSize: 22,
@@ -278,6 +269,35 @@ const Profile = ({navigation}) => {
                     fontFamily: 'Inter',
                   }}>
                   Total Amount : {latestOrder.totalAmount}
+                </Text>
+                <Text
+                  style={{
+                    margin: 10,
+                    color: 'green',
+                    fontSize: 22,
+                    fontWeight: '700',
+                    fontFamily: 'Inter',
+                  }}>
+                  Order Status: {latestOrder.orderStatus}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  marginTop: 20,
+                  backgroundColor: '#71797E',
+                  width: width - 40,
+                  borderRadius: 10,
+                  alignItems: 'center',
+                  padding: 10,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 22,
+                    fontWeight: '700',
+                    fontFamily: 'Inter',
+                  }}>
+                  See All Orders
                 </Text>
               </TouchableOpacity>
             </View>
