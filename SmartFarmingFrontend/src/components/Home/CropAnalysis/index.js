@@ -121,7 +121,7 @@ const CropAnalysis = ({navigation}) => {
                     'Nov',
                     'Dec',
                   ]}
-                  defaultValue={'English'}
+                  defaultValue={'Jan'}
                   buttonStyle={{
                     width: 100,
                     height: 30,

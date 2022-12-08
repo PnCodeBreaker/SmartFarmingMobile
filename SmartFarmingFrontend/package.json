@@ -2,6 +2,7 @@
   "name": "smartfarmingfrontend",
   "version": "0.0.1",
   "private": true,
+  "proxy": "https://protected-earth-38483.herokuapp.com",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
