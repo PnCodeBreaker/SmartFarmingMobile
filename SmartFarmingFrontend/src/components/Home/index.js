@@ -48,23 +48,23 @@ const Home = ({navigation}) => {
           }}
         />
         <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            tabBarIcon: ({color, size}) => (
-              <Text style={{color: color, fontFamily: 'Inter', fontSize: 15}}>
-                Profile
-              </Text>
-            ),
-          }}
-        />
-        <Tab.Screen
           name="AgroPlus"
           component={AgroPlus}
           options={{
             tabBarIcon: ({color, size}) => (
               <Text style={{color: color, fontFamily: 'Inter', fontSize: 15}}>
                 Agro+
+              </Text>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarIcon: ({color, size}) => (
+              <Text style={{color: color, fontFamily: 'Inter', fontSize: 15}}>
+                Profile
               </Text>
             ),
           }}

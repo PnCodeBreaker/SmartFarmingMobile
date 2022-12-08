@@ -34,7 +34,7 @@ const Section = ({navigation}) => {
           }}>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 16,
               fontFamily: 'Inter',
               fontWeight: '600',
               color: '#F5F5F5',
@@ -59,7 +59,7 @@ const Section = ({navigation}) => {
           }}>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 16,
               fontFamily: 'Inter',
               fontWeight: '600',
               color: '#F5F5F5',
